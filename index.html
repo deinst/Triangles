@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="build/bundle.js" charset="UTF-8"></script>
+    <style type="text/css">
+        form, div {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+        }
+        #canvas_container {
+            width: 500px;
+            border: 1px solid gray(170);
+        }
+    </style>
+</head>
+<body>
+<form>
+        <span>
+        <label for="game_size">Game size:</label>
+        <input id="game_size" type="number" min="4" max="15" value="4">
+        <input id="reset" type="button" value="New Game">
+        <input id="back" type="button" value="Undo Last Move">
+        </span>
+</form>
+<div id="canvas_container"></div>
+<p>The object is to click as many light blue circles as possible.</p>
+<p>Unfortunately, the circles change color according to some initially incomprehensible rules.</p>
+</body>
+</html>
