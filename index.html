@@ -10,6 +10,7 @@
             margin: 0 auto;
             text-align: center;
         }
+
         #canvas_container {
             width: 500px;
             border: 1px solid gray(170);
@@ -26,16 +27,47 @@
         </span>
 </form>
 <div id="canvas_container"></div>
-<p>The object is to click as many light blue circles as possible.</p>
-<p>Unfortunately, the circles change color according to some initially incomprehensible rules. For your first move
-    you can click on any of the circles.  Thereafter you can only move to an adjacent circle, but not all adjacent circles
-    are possible.  Note that any move between two adjacent circles moves closer to one edge of the triangle, further from
+<p>The object is to click as many light blue circles as possible. When clicked, the circle becomes black. Circles you
+    can not click turn green, while clickable circles turn light blue.</p>
+
+<p>For your first move, you can click on any circle. Thereafter, you can only click on adjacent light blue circles.
+    After the first move, the next N moves (where N is the game size) must travel toward each edge of the triangle equal
+    to the distance to the edge of the initial circle. The number of remaining moves toward each edge appears beside
+    each edge.</p>
+
+<p>Unfortunately, the circles change color according to some initially incomprehensible rules. For your first move you
+    can click on any of the circles. Thereafter you can only move to an adjacent circle, but not all adjacent circles
+    are possible. Note that any move between two adjacent circles moves closer to one edge of the triangle, further from
     another and parallel to a third. (For the smaller games, the circle is labeled with the distance to the edges.)</p>
+
 <p>After the first move, the next n moves, where n is the game size, must altogether have moves toward each edge equal
     to the distance to the edge of the initial circle. (The number of remaining moves toward each edge are written next
     to that edge.</p>
-<p> After the first n moves, each move must move toward the edge that the move n moves ago moved away from.
-    (The move n moves ago is highlighted in blue.)</p>
 
+<p>After the first n moves, each move must move toward the edge that the move n moves ago moved away from. (The move n
+    moves ago is highlighted in blue.)</p>
+
+<p>The known best possible scores are:</p>
+<table>
+    <tr>
+        <th>Game Size</th>
+        <th>Best Possible Score</th>
+    </tr>
+    <tr>
+        <td>4</td><td>14</td>
+    </tr>
+    <tr>
+        <td>5</td><td>18</td>
+    </tr>
+    <tr>
+        <td>6</td><td>25</td>
+    </tr>
+    <tr>
+        <td>7</td><td>33</td>
+    </tr>
+    <tr>
+        <td>8</td><td>38</td>
+    </tr>
+</table>
 </body>
 </html>
