@@ -115,9 +115,9 @@ var game = {
             this.n = n;
         }
         this.moveNumber = 0;
-        this.sites = new Array();
+        this.sites = [];
         for (var i = 0; i <= n; i++) {
-            this.sites[i] = new Array();
+            this.sites[i] = [];
             for (var j = 0; j <= n - i; j++) {
                 this.sites[i][j] = -1;
             }
@@ -128,7 +128,7 @@ var game = {
             return false;
         }
         this.moves[this.moveNumber] = coord;
-        if (this.moveNumber == 0) {
+        if (this.moveNumber === 0) {
             this.available[0] = [coord[0], coord[1], this.n - coord[0] - coord[1]];
         } else if (this.moveNumber <= this.n) {
             var edge = edgeType(this.moves[this.moveNumber - 1], coord);
@@ -162,12 +162,12 @@ var game = {
             return this.available[this.moveNumber - 1][edge.decrease] > 0;
         }
         var oldmove = this.moveNumber - this.n;
-        var oldedge = edgeType(this.moves[oldmove - 1], this.moves[oldmove])
+        var oldedge = edgeType(this.moves[oldmove - 1], this.moves[oldmove]);
         return oldedge.increase === edge.decrease;
     },
     validMoves: function () {
         if (this.moveNumber === 0) {
-            var all = []
+            var all = [];
             for (var i = 0; i <= this.n; i++) {
                 for (var j = 0; j <= this.n - i; j ++) {
                     all.push([i,j]);
@@ -188,8 +188,11 @@ var game = {
             var m = this.moves[this.moveNumber];
             this.sites[m[0]][m[1]] = -1;
         }
+    },
+    getProblemString: function() {
+        return '????';
     }
-}
+};
 
 exports.game = game;
 
@@ -244,7 +247,7 @@ function VertexDisplay(i, j, paper, dist) {
             path.attr({"arrow-end":"classic", stroke:"black", "stroke-width":3});
             arrows.push({i:i1, j:j1, path: path});
         }
-    })
+    });
     this.arrows = arrows;
     this.color = function(game) {
         if (this.text) {
@@ -279,7 +282,13 @@ function VertexDisplay(i, j, paper, dist) {
     }.bind(this)
 }
 
-
+function Dist(paper, n) {
+    this.height = Math.min(paper.height, paper.width);
+    this.n = n;
+    this.w = this.height / (this.n +  2);
+    this.h = Math.sqrt(3) * this.w / 2;
+    this.r = this.w /4;
+}
 
 var gameDisplay = {
     paper: null,
@@ -295,10 +304,7 @@ var gameDisplay = {
     },
     drawFirst: function(n) {
         this.paper.clear();
-        this.dist.n = n;
-        this.dist.w = this.dist.height/(this.dist.n + 2);
-        this.dist.h = Math.sqrt(3) * this.dist.w / 2;
-        this.dist.r = this.dist.w / 4;
+        this.dist = new Dist(this.paper, n);
         this.nodes = [];
         for (var i = 0; i <= this.dist.n; i++) {
             this.nodes[i] = [];
@@ -307,12 +313,12 @@ var gameDisplay = {
             }
         }
         var dist = this.dist;
-        pos0 = getPos(-1/2, dist.n/2 + 1/4, dist);
-        this.sideLabels[0] = this.paper.text(pos0.x, pos0.y, ' ').attr({"font-size":dist.r})
-        pos1 = getPos(dist.n/2 + 1/4, -1/2, dist);
-        this.sideLabels[1] = this.paper.text(pos1.x, pos1.y, ' ').attr({"font-size":dist.r})
-        pos2 = getPos(dist.n/2 + 1/4, dist.n/2 + 1/4, dist);
-        this.sideLabels[2] = this.paper.text(pos2.x, pos2.y, ' ').attr({"font-size":dist.r})
+        var pos0 = getPos(-1/2, dist.n/2 + 1/4, dist);
+        this.sideLabels[0] = this.paper.text(pos0.x, pos0.y, ' ').attr({"font-size":dist.r});
+        var pos1 = getPos(dist.n / 2 + 1 / 4, -1 / 2, dist);
+        this.sideLabels[1] = this.paper.text(pos1.x, pos1.y, ' ').attr({"font-size":dist.r});
+        var pos2 = getPos(dist.n / 2 + 1 / 4, dist.n / 2 + 1 / 4, dist);
+        this.sideLabels[2] = this.paper.text(pos2.x, pos2.y, ' ').attr({"font-size":dist.r});
         this.scoreText = this.paper.text(10,50, 'Score: 0').attr({"font-size":40, "text-anchor":"start"})
     },
     reset: function(n){
@@ -329,17 +335,17 @@ var gameDisplay = {
             row.forEach(function(elem) {
                 elem.color(game);
             })
-        })
+        });
         if ((game.moveNumber > 0) &&  (game.moveNumber <= game.n)) {
-            this.sideLabels[0].attr({text: game.available[game.moveNumber - 1][0].toString()})
-            this.sideLabels[1].attr({text: game.available[game.moveNumber - 1][1].toString()})
+            this.sideLabels[0].attr({text: game.available[game.moveNumber - 1][0].toString()});
+            this.sideLabels[1].attr({text: game.available[game.moveNumber - 1][1].toString()});
             this.sideLabels[2].attr({text: game.available[game.moveNumber - 1][2].toString()})
         } else if (game.moveNumber === 0) {
-            this.sideLabels[0].attr({text: ' '})
-            this.sideLabels[1].attr({text: ' '})
+            this.sideLabels[0].attr({text: ' '});
+            this.sideLabels[1].attr({text: ' '});
             this.sideLabels[2].attr({text: ' '})
         } else {
-            mv = edgeType(game.moves[game.moveNumber - game.n - 1], game.moves[game.moveNumber - game.n]);
+            var mv = edgeType(game.moves[game.moveNumber - game.n - 1], game.moves[game.moveNumber - game.n]);
 
             this.sideLabels[0].attr({text: (mv.increase === 0 ? '1' : '0')});
             this.sideLabels[1].attr({text: (mv.increase === 1 ? '1' : '0')});
@@ -359,16 +365,13 @@ exports.gameDisplay = gameDisplay;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_raphael__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_raphael___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_raphael__);
 /**
  * Created by davideinstein on 5/20/17.
  */
-
+//import Raphael from 'raphael';
+var Raphael = __webpack_require__(1);
 var gd = __webpack_require__(2).gameDisplay;
 
 function tryUpdate() {
@@ -378,14 +381,13 @@ function tryUpdate() {
 }
 
 window.onload = function () {
-    var paper = new __WEBPACK_IMPORTED_MODULE_0_raphael___default.a(document.getElementById('canvas_container'), 500, 500);
+    var paper = new Raphael(document.getElementById('canvas_container'), 500, 500);
     gd.init(paper, 4);
     var backbutton = document.getElementById('back');
     backbutton.addEventListener('click', gd.undoMove.bind(gd));
     var resetbutton = document.getElementById('reset');
-    var gameSize = document.getElementById('game_size');
     resetbutton.addEventListener('click', tryUpdate);
-}
+};
 
 
 /***/ })

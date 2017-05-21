@@ -36,7 +36,7 @@ function VertexDisplay(i, j, paper, dist) {
             path.attr({"arrow-end":"classic", stroke:"black", "stroke-width":3});
             arrows.push({i:i1, j:j1, path: path});
         }
-    })
+    });
     this.arrows = arrows;
     this.color = function(game) {
         if (this.text) {
@@ -71,7 +71,13 @@ function VertexDisplay(i, j, paper, dist) {
     }.bind(this)
 }
 
-
+function Dist(paper, n) {
+    this.height = Math.min(paper.height, paper.width);
+    this.n = n;
+    this.w = this.height / (this.n +  2);
+    this.h = Math.sqrt(3) * this.w / 2;
+    this.r = this.w /4;
+}
 
 var gameDisplay = {
     paper: null,
@@ -87,10 +93,7 @@ var gameDisplay = {
     },
     drawFirst: function(n) {
         this.paper.clear();
-        this.dist.n = n;
-        this.dist.w = this.dist.height/(this.dist.n + 2);
-        this.dist.h = Math.sqrt(3) * this.dist.w / 2;
-        this.dist.r = this.dist.w / 4;
+        this.dist = new Dist(this.paper, n);
         this.nodes = [];
         for (var i = 0; i <= this.dist.n; i++) {
             this.nodes[i] = [];
@@ -99,12 +102,12 @@ var gameDisplay = {
             }
         }
         var dist = this.dist;
-        pos0 = getPos(-1/2, dist.n/2 + 1/4, dist);
-        this.sideLabels[0] = this.paper.text(pos0.x, pos0.y, ' ').attr({"font-size":dist.r})
-        pos1 = getPos(dist.n/2 + 1/4, -1/2, dist);
-        this.sideLabels[1] = this.paper.text(pos1.x, pos1.y, ' ').attr({"font-size":dist.r})
-        pos2 = getPos(dist.n/2 + 1/4, dist.n/2 + 1/4, dist);
-        this.sideLabels[2] = this.paper.text(pos2.x, pos2.y, ' ').attr({"font-size":dist.r})
+        var pos0 = getPos(-1/2, dist.n/2 + 1/4, dist);
+        this.sideLabels[0] = this.paper.text(pos0.x, pos0.y, ' ').attr({"font-size":dist.r});
+        var pos1 = getPos(dist.n / 2 + 1 / 4, -1 / 2, dist);
+        this.sideLabels[1] = this.paper.text(pos1.x, pos1.y, ' ').attr({"font-size":dist.r});
+        var pos2 = getPos(dist.n / 2 + 1 / 4, dist.n / 2 + 1 / 4, dist);
+        this.sideLabels[2] = this.paper.text(pos2.x, pos2.y, ' ').attr({"font-size":dist.r});
         this.scoreText = this.paper.text(10,50, 'Score: 0').attr({"font-size":40, "text-anchor":"start"})
     },
     reset: function(n){
@@ -121,17 +124,17 @@ var gameDisplay = {
             row.forEach(function(elem) {
                 elem.color(game);
             })
-        })
+        });
         if ((game.moveNumber > 0) &&  (game.moveNumber <= game.n)) {
-            this.sideLabels[0].attr({text: game.available[game.moveNumber - 1][0].toString()})
-            this.sideLabels[1].attr({text: game.available[game.moveNumber - 1][1].toString()})
+            this.sideLabels[0].attr({text: game.available[game.moveNumber - 1][0].toString()});
+            this.sideLabels[1].attr({text: game.available[game.moveNumber - 1][1].toString()});
             this.sideLabels[2].attr({text: game.available[game.moveNumber - 1][2].toString()})
         } else if (game.moveNumber === 0) {
-            this.sideLabels[0].attr({text: ' '})
-            this.sideLabels[1].attr({text: ' '})
+            this.sideLabels[0].attr({text: ' '});
+            this.sideLabels[1].attr({text: ' '});
             this.sideLabels[2].attr({text: ' '})
         } else {
-            mv = edgeType(game.moves[game.moveNumber - game.n - 1], game.moves[game.moveNumber - game.n]);
+            var mv = edgeType(game.moves[game.moveNumber - game.n - 1], game.moves[game.moveNumber - game.n]);
 
             this.sideLabels[0].attr({text: (mv.increase === 0 ? '1' : '0')});
             this.sideLabels[1].attr({text: (mv.increase === 1 ? '1' : '0')});

@@ -43,9 +43,9 @@ var game = {
             this.n = n;
         }
         this.moveNumber = 0;
-        this.sites = new Array();
+        this.sites = [];
         for (var i = 0; i <= n; i++) {
-            this.sites[i] = new Array();
+            this.sites[i] = [];
             for (var j = 0; j <= n - i; j++) {
                 this.sites[i][j] = -1;
             }
@@ -56,7 +56,7 @@ var game = {
             return false;
         }
         this.moves[this.moveNumber] = coord;
-        if (this.moveNumber == 0) {
+        if (this.moveNumber === 0) {
             this.available[0] = [coord[0], coord[1], this.n - coord[0] - coord[1]];
         } else if (this.moveNumber <= this.n) {
             var edge = edgeType(this.moves[this.moveNumber - 1], coord);
@@ -90,12 +90,12 @@ var game = {
             return this.available[this.moveNumber - 1][edge.decrease] > 0;
         }
         var oldmove = this.moveNumber - this.n;
-        var oldedge = edgeType(this.moves[oldmove - 1], this.moves[oldmove])
+        var oldedge = edgeType(this.moves[oldmove - 1], this.moves[oldmove]);
         return oldedge.increase === edge.decrease;
     },
     validMoves: function () {
         if (this.moveNumber === 0) {
-            var all = []
+            var all = [];
             for (var i = 0; i <= this.n; i++) {
                 for (var j = 0; j <= this.n - i; j ++) {
                     all.push([i,j]);
@@ -116,7 +116,10 @@ var game = {
             var m = this.moves[this.moveNumber];
             this.sites[m[0]][m[1]] = -1;
         }
+    },
+    getProblemString: function() {
+        return '????';
     }
-}
+};
 
 exports.game = game;

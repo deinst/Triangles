@@ -1,7 +1,8 @@
 /**
  * Created by davideinstein on 5/20/17.
  */
-import Raphael from 'raphael';
+//import Raphael from 'raphael';
+var Raphael = require('raphael');
 var gd = require('./src/game_display.js').gameDisplay;
 
 function tryUpdate() {
@@ -16,6 +17,5 @@ window.onload = function () {
     var backbutton = document.getElementById('back');
     backbutton.addEventListener('click', gd.undoMove.bind(gd));
     var resetbutton = document.getElementById('reset');
-    var gameSize = document.getElementById('game_size');
     resetbutton.addEventListener('click', tryUpdate);
-}
+};

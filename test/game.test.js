@@ -17,24 +17,24 @@ describe("game object", function(){
         });
         it("should have a list of moves", function () {
             ts.game.should.have.property('moves');
-        })
+        });
         it("should have a list of available transitions", function () {
             ts.game.should.have.property('available')
-        })
+        });
         it("should have a list of sites", function () {
             ts.game.should.have.property('sites')
-        })
+        });
         it("should have a reset function", function(){
             ts.game.should.have.property('reset')
-        })
-    })
+        });
+    });
     describe("reset function", function(){
         it("should set moves to 0", function(){
             ts.game.reset();
             ts.game.moveNumber.should.equal(0);
         })
     })
-})
+});
 
 describe("adjacentVertices", function(){
     it("should recognize adjacent vertices", function(){
@@ -51,7 +51,7 @@ describe("adjacentVertices", function(){
             }
         }
     })
-})
+});
 describe("edge type", function(){
     it("should return the appropriate value", function () {
         var tests = [
@@ -60,15 +60,15 @@ describe("edge type", function(){
             {arg: [3,2], result: {increase: 2, decrease: 1}},
             {arg: [3,4], result: {increase: 1, decrease: 2}},
             {arg: [4,2], result: {increase: 0, decrease: 1}},
-            {arg: [4,3], result: {increase: 0, decrease: 2}},
+            {arg: [4,3], result: {increase: 0, decrease: 2}}
         ];
         function checkEdge(test) {
             var res = ts.edgeType([3,3], test.arg);
-            return (res.increase == test.result.increase) && (res.decrease == test.result.decrease)
+            return (res.increase === test.result.increase) && (res.decrease === test.result.decrease)
         }
         tests.forEach(function(test) {checkEdge(test).should.be.true;})
     })
-})
+});
 describe('check valid next', function(){
     describe("start of game", function(){
         it("should have all posibilities", function(){
@@ -76,7 +76,7 @@ describe('check valid next', function(){
             var allmoves = ts.game.validMoves();
             allmoves.should.have.length(15);
         })
-    })
+    });
     describe("check early moves", function(){
         it("should only allow available moves", function(){
             ts.game.reset(4);
@@ -92,7 +92,7 @@ describe('check valid next', function(){
             moves = ts.game.validMoves();
             moves.should.have.deep.members([ [ 0, 2 ], [ 1, 0 ], [ 2, 0 ] ]);
         })
-    })
+    });
     describe("check late moves", function(){
         it("should only allow available moves", function(){
             ts.game.reset(4);
@@ -103,7 +103,7 @@ describe('check valid next', function(){
             ts.game.validMoves().should.have.deep.members([[1,2], [1,3]]);
         })
     })
-})
+});
 
 describe("follow game", function () {
     var game = [[2,1],[1,2],[0,3],[0,4],[1,3],[2,2],[3,1],[4,0],[3,0],[2,0],[1,0],[0,0],[0,1],[1,1]];
@@ -113,4 +113,12 @@ describe("follow game", function () {
             ts.game.move(mv).should.equal(true);
         })
     })
-})
+});
+describe('get original problem string', function(){
+    it('should return the expected result', function(){
+        ts.game.reset(4);
+        ts.game.getProblemString().should.equal('????');
+        ts.game.move([2,1]);
+        ts.game.getProblemString().should.equal('????');
+    })
+});
