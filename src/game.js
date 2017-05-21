@@ -1,7 +1,7 @@
 /**
  * Created by davideinstein on 5/20/17.
  */
-
+'use strict';
 function adjacentVertices(a, b) {
     return (Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) + Math.abs(a[0] + a[1] - b[0] - b[1])) === 2;
 }
@@ -123,7 +123,7 @@ var game = {
             return base;
         }
         var temp = [];
-        for (i = 0; i < this.moveNumber - 1; i++) {
+        for (var i = 0; i < this.moveNumber - 1; i++) {
             temp.push(edgeType(this.moves[i], this.moves[i+1]))
         }
         var sd = temp.map(function(x){return x.decrease}).join('');

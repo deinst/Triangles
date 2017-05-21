@@ -68,8 +68,9 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 /**
  * Created by davideinstein on 5/20/17.
  */
@@ -195,7 +196,7 @@ var game = {
             return base;
         }
         var temp = [];
-        for (i = 0; i < this.moveNumber - 1; i++) {
+        for (var i = 0; i < this.moveNumber - 1; i++) {
             temp.push(edgeType(this.moves[i], this.moves[i+1]))
         }
         var sd = temp.map(function(x){return x.decrease}).join('');
@@ -224,6 +225,7 @@ i._.arrows&&("startString"in i._.arrows&&_(i,i._.arrows.startString),"endString"
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 /**
  * Created by davideinstein on 5/20/17.
  */
@@ -311,7 +313,9 @@ var gameDisplay = {
     nodes: [],
     sideLabels: [],
     scoreText: null,
-    init: function(paper, n) {
+    problemDiv: null,
+    init: function(paper, n, div) {
+        this.problemDiv = div;
         this.paper = paper;
         this.dist.height = Math.min(paper.height, paper.width);
         game.reset(n);
@@ -366,7 +370,8 @@ var gameDisplay = {
             this.sideLabels[1].attr({text: (mv.increase === 1 ? '1' : '0')});
             this.sideLabels[2].attr({text: (mv.increase === 2 ? '1' : '0')});
         }
-        this.scoreText.attr({text: "Score: " + game.moveNumber})
+        this.scoreText.attr({text: "Score: " + game.moveNumber});
+        this.problemDiv.innerHTML = game.getProblemString();
     },
     undoMove: function() {
         console.log(this);
@@ -382,10 +387,11 @@ exports.gameDisplay = gameDisplay;
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 /**
  * Created by davideinstein on 5/20/17.
  */
-//import Raphael from 'raphael';
+
 var Raphael = __webpack_require__(1);
 var gd = __webpack_require__(2).gameDisplay;
 
@@ -397,7 +403,8 @@ function tryUpdate() {
 
 window.onload = function () {
     var paper = new Raphael(document.getElementById('canvas_container'), 500, 500);
-    gd.init(paper, 4);
+    var resultDiv = document.getElementById('problem_string');
+    gd.init(paper, 4, resultDiv);
     var backbutton = document.getElementById('back');
     backbutton.addEventListener('click', gd.undoMove.bind(gd));
     var resetbutton = document.getElementById('reset');

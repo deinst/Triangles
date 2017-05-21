@@ -1,6 +1,7 @@
 /**
  * Created by davideinstein on 5/20/17.
  */
+'use strict';
 var chai = require('chai');
 var expect = chai.expect;
 var should = chai.should();

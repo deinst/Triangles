@@ -1,7 +1,7 @@
 /**
  * Created by davideinstein on 5/20/17.
  */
-
+'use strict';
 var game = require("../src/game.js").game;
 var edgeType = require("../src/game.js").edgeType;
 
@@ -85,7 +85,9 @@ var gameDisplay = {
     nodes: [],
     sideLabels: [],
     scoreText: null,
-    init: function(paper, n) {
+    problemDiv: null,
+    init: function(paper, n, div) {
+        this.problemDiv = div;
         this.paper = paper;
         this.dist.height = Math.min(paper.height, paper.width);
         game.reset(n);
@@ -140,7 +142,8 @@ var gameDisplay = {
             this.sideLabels[1].attr({text: (mv.increase === 1 ? '1' : '0')});
             this.sideLabels[2].attr({text: (mv.increase === 2 ? '1' : '0')});
         }
-        this.scoreText.attr({text: "Score: " + game.moveNumber})
+        this.scoreText.attr({text: "Score: " + game.moveNumber});
+        this.problemDiv.innerHTML = game.getProblemString();
     },
     undoMove: function() {
         console.log(this);
