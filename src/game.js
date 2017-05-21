@@ -118,7 +118,22 @@ var game = {
         }
     },
     getProblemString: function() {
-        return '????';
+        var base = (new Array(this.n + 1)).join('?');
+        if (this.moveNumber <= 1) {
+            return base;
+        }
+        var temp = [];
+        for (i = 0; i < this.moveNumber - 1; i++) {
+            temp.push(edgeType(this.moves[i], this.moves[i+1]))
+        }
+        var sd = temp.map(function(x){return x.decrease}).join('');
+        var si = temp.map(function(x){return x.increase}).join('');
+        if (sd.length < this.n) {
+            base = sd + (new Array(this.n + 1 - sd.length)).join('?');
+        } else {
+            base = sd.substr(0, this.n)
+        }
+        return base + si;
     }
 };
 

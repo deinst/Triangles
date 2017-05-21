@@ -120,5 +120,15 @@ describe('get original problem string', function(){
         ts.game.getProblemString().should.equal('????');
         ts.game.move([2,1]);
         ts.game.getProblemString().should.equal('????');
+        ts.game.move([1,2]);
+        ts.game.getProblemString().should.equal('0???1');
+        ts.game.move([0,3]);
+        ts.game.getProblemString().should.equal('00??11');
+        ts.game.move([0,4]);
+        ts.game.getProblemString().should.equal('002?111');
+        ts.game.move([1,3]);
+        ts.game.getProblemString().should.equal('00211110');
+        ts.game.move([2,2]);
+        ts.game.getProblemString().should.equal('002111100');
     })
 });
